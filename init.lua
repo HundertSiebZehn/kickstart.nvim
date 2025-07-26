@@ -239,6 +239,8 @@ rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
+local codestatsSecret = require 'secret.codestats'
+local codestatsUtil = require 'custom.codestatsUtil'
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
@@ -276,6 +278,7 @@ require('lazy').setup({
       },
     },
   },
+  -- NOTE: My Custom Plugins
   {
     'liljaylj/codestats.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -283,9 +286,9 @@ require('lazy').setup({
     cmd = { 'CodeStatsXpSend', 'CodeStatsProfileUpdate' },
     config = function()
       require('codestats').setup {
-        username = require(vim.fn.stdpath 'config' .. '.secret.codestats').username, -- needed to fetch profile data
+        username = codestatsSecret.username,
         base_url = 'https://codestats.net', -- codestats.net base url
-        api_key = require(vim.fn.stdpath 'config' .. '.secret.codestats').api_key,
+        api_key = codestatsSecret.api_key,
         send_on_exit = true, -- send xp on nvim exit
         send_on_timer = true, -- send xp on timer
         timer_interval = 60000, -- timer interval in milliseconds (minimum 1000ms to prevent DDoSing codestat.net servers)
@@ -293,7 +296,77 @@ require('lazy').setup({
       }
     end,
   },
-
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup {
+        options = {
+          icons_enabled = true,
+          theme = 'auto',
+          component_separators = { left = '', right = '' },
+          section_separators = { left = '', right = '' },
+          disabled_filetypes = {
+            statusline = {},
+            winbar = {},
+          },
+          ignore_focus = {},
+          always_divide_middle = true,
+          always_show_tabline = true,
+          globalstatus = false,
+          refresh = {
+            statusline = 1000,
+            tabline = 1000,
+            winbar = 1000,
+            refresh_time = 32,
+            events = {
+              'WinEnter',
+              'BufEnter',
+              'BufWritePost',
+              'SessionLoadPost',
+              'FileChangedShellPost',
+              'VimResized',
+              'Filetype',
+              'CursorMoved',
+              'CursorMovedI',
+              'ModeChanged',
+            },
+          },
+        },
+        sections = {
+          lualine_a = { 'mode' },
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { 'filename', 'lsp_status' },
+          lualine_x = {
+            {
+              codestatsUtil.xp_delta(),
+              fmt = function(s)
+                return 'C::S ' .. s .. 'xp'
+                -- return s and (s ~= '0' or nil) and 'C::S ' .. s .. 'xp'
+              end,
+            },
+            { 'encoding', show_bomb = true }, -- show BOM if present
+            -- 'fileformat',
+            'filetype',
+          },
+          lualine_y = { 'progress' },
+          lualine_z = { 'location' },
+        },
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = { 'filename' },
+          lualine_x = { 'location' },
+          lualine_y = {},
+          lualine_z = {},
+        },
+        tabline = {},
+        winbar = {},
+        inactive_winbar = {},
+        extensions = {},
+      }
+    end,
+  },
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -884,7 +957,6 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -985,7 +1057,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
+  -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
