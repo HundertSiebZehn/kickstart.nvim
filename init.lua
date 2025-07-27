@@ -940,7 +940,25 @@ require('lazy').setup({
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 500,
+          window = {
+            border = 'single',
+          },
+        },
+        accept = { auto_brackets = { enabled = false } }, -- handled by autopairs plugin
+        list = { selection = { preselect = true, auto_insert = false } },
+        menu = {
+          draw = {
+            columns = {
+              { 'kind_icon' },
+              { 'label', 'label_description', gap = 1 },
+              { 'kind' },
+            },
+          },
+        },
+        ghost_text = { enabled = true },
       },
 
       sources = {
@@ -1065,7 +1083,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
