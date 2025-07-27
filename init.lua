@@ -367,6 +367,9 @@ require('lazy').setup({
       }
     end,
   },
+  {
+    'sindrets/diffview.nvim',
+  },
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -526,6 +529,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
       vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' })
       vim.keymap.set('n', '<leader>gl', builtin.git_commits, { desc = '[G]it [L]og' })
+      vim.keymap.set('n', '<leader>gd', require('diffview').open, { desc = 'Open [G]it [D]iff' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
