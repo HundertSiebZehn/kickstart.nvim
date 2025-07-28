@@ -239,7 +239,7 @@ rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
-local codestatsSecret = require 'secret.codestats'
+local codestatsSecret = require 'custom.secret.codestats'
 local codestatsUtil = require 'custom.codestatsUtil'
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
