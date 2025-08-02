@@ -370,6 +370,21 @@ require('lazy').setup({
   {
     'sindrets/diffview.nvim',
   },
+  {
+    'rcarriga/nvim-notify',
+    init = function()
+      vim.notification = require 'notify'
+    end,
+    config = function()
+      require('notify').setup {
+        fps = 60,
+        render = 'default',
+        stages = 'slide',
+        timeout = 1500,
+        top_down = true,
+      }
+    end,
+  },
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle

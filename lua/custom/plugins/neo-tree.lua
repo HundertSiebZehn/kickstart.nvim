@@ -27,8 +27,11 @@ return {
         local node = state.tree:get_node()
         if node and node.type == 'file' then
           local path = node:get_id()
-          -- vim.api.nvim_input(":Neotree close<CR>")
-          vim.api.nvim_input(':tabnew ' .. path .. '<CR>')
+          vim.api.nvim_input(':Neotree close<CR>:tabnew ' .. path .. '<CR>')
+        else
+          vim.notification('Not a file!', 'error', {
+            title = 'NeoTree',
+          })
         end
       end,
     },
