@@ -11,29 +11,26 @@ return {
   },
   lazy = false,
   keys = {
-    { '\\', ':Neotree reveal position=float<CR>', desc = 'NeoTree reveal', silent = true },
+    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { 'G', ':Neotree reveal git_status<CR>', desc = 'GitStatus', silent = true },
   },
   opts = {
     filesystem = {
       window = {
         mappings = {
           ['\\'] = 'close_window',
-          ['t'] = 'open_tab',
+          ['t'] = 'open_tabnew',
         },
       },
     },
-    commands = {
-      open_tab = function(state)
-        local node = state.tree:get_node()
-        if node and node.type == 'file' then
-          local path = node:get_id()
-          vim.api.nvim_input(':Neotree close<CR>:tabnew ' .. path .. '<CR>')
-        else
-          vim.notification('Not a file!', 'error', {
-            title = 'NeoTree',
-          })
-        end
-      end,
+    commands = {},
+    close_if_last_windowa = true,
+    sort_case_insensitive = true,
+    default_component_configs = {
+      use_git_status_colors = true,
+    },
+    window = {
+      position = 'float',
     },
   },
 }
